@@ -35,7 +35,7 @@ export class Movies extends Component {
   // }
 
   render() {
-
+    const { navigate } = this.props.navigation;
     if (this.state.isLoading) {
       return (
         <View style={{ flex: 1, paddingTop: 20 }}>
@@ -60,7 +60,7 @@ export class Movies extends Component {
         <Button title="Buscar" onPress={() => this.getVeiculos()} />
 
         {this.state.data.map((item, i) => (
-          <ListItem key={i} title={item.name} />
+          <ListItem key={i} title={item.name} onPress={() => console.log(item.id) } />
         ))}
 
       </View>
@@ -91,7 +91,7 @@ export class Movies extends Component {
     if (data == "") {
       alert("Escolha uma opção de veiculo");
     } else {
-      
+
       axios
         .get(`http://fipeapi.appspot.com/api/1/carros/veiculos/${this.state.PickerValue}.json`)
         .then(resp => {

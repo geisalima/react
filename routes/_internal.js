@@ -1,12 +1,12 @@
 import { createStackNavigator } from 'react-navigation';
-import { Movies } from '../views';
+import { Movies, Detalhes } from '../views';
 
 export const InternalNav = createStackNavigator({
-    Movies: {
-      screen: Movies,
-      navigationOptions: () => ({
-        title: 'Busca veículos'
-      })
-    },
-  }
+  Movies: {
+    screen: Movies,
+    navigationOptions: () => ({
+      title: 'Busca veículos'
+    })
+  },
+}
 );
