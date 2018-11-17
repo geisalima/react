@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Picker, Button, ActivityIndicator, Alert } from 'react-native';
+import { View, Picker, Button, ActivityIndicator, Alert, ScrollView } from 'react-native';
 import { SearchBar, ListItem } from 'react-native-elements';
 import axios from 'axios';
 
@@ -28,14 +28,12 @@ export class Movies extends Component {
       });
   }
 
-  // GetPickerSelectedItemValue = () => {
-
-  //   Alert.alert(this.state.PickerValue);
-
-  // }
+  onDetalhes = (item) => {
+    this.props.navigation.navigate('Detalhes', item);
+  };
 
   render() {
-    const { navigate } = this.props.navigation;
+
     if (this.state.isLoading) {
       return (
         <View style={{ flex: 1, paddingTop: 20 }}>
@@ -44,6 +42,8 @@ export class Movies extends Component {
       );
     }
 
+    const { navigate } = this.props.navigation;
+
     return (
       <View>
 
@@ -51,7 +51,7 @@ export class Movies extends Component {
           selectedValue={this.state.PickerValue}
           onValueChange={(itemValue, indexValue) => this.setState({ PickerValue: itemValue })} >
 
-          <Picker.Item label="Selecione o tipo de veiculo" value="" />
+          <Picker.Item label="Selecione a marca do veiculo" value="" />
           {this.state.dataSource.map((item, key) => (
             <Picker.Item label={item.fipe_name} value={item.id} key={key} />)
           )}
@@ -59,29 +59,13 @@ export class Movies extends Component {
 
         <Button title="Buscar" onPress={() => this.getVeiculos()} />
 
-        {this.state.data.map((item, i) => (
-          <ListItem key={i} title={item.name} onPress={() => console.log(item.id) } />
-        ))}
+        <ScrollView>
+          {this.state.data.map((item, i) => (
+            <ListItem key={i} title={item.name} onPress={() => this.onDetalhes(item) } />
+          ))}
+        </ScrollView>
 
       </View>
-
-      // <View>
-      //   <Picker
-      //     selectedValue={this.state.PickerValue}
-      //     style={{ height: 50, width: 300 }}
-      //     onValueChange={(itemValue, indexValue) => this.setState({ PickerValue: itemValue })}
-      //   >
-      //     <Picker.Item label="Selecione o tipo de veiculo" value="" />
-      //     <Picker.Item label="Carros" value="carros" />
-      //     <Picker.Item label="Fiat" value="21" />
-      //   </Picker>
-
-      //   <Button title="Buscar" onPress={() => this.getVeiculos()} />
-
-      //   {this.state.data.map((item, i) => (
-      //     <ListItem key={i} title={item.name} />
-      //   ))}
-      // </View>
     );
   }
 
@@ -89,7 +73,7 @@ export class Movies extends Component {
     var data = this.state.PickerValue;
 
     if (data == "") {
-      alert("Escolha uma opção de veiculo");
+      alert("Escolha uma opção de marca");
     } else {
 
       axios

@@ -13,7 +13,9 @@
     "expo": "^31.0.2",
     "react": "16.5.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-31.0.0.tar.gz",
+    "react-native-chooser": "^1.7.0",
     "react-native-elements": "^0.19.1",
+    "react-native-popover-view": "^1.0.14",
     "react-navigation": "^2.18.2"
   },
   "devDependencies": {

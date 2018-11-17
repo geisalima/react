@@ -8,5 +8,12 @@ export const InternalNav = createStackNavigator({
       title: 'Busca veículos'
     })
   },
-}
-);
+  
+  Detalhes: {
+    screen: Detalhes,
+    navigationOptions: () => ({
+      title: 'Detalhes do veículo'
+    })
+  }
+
+});
