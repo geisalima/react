@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { View, Picker, Button, ActivityIndicator, Alert, ScrollView } from 'react-native';
-import { SearchBar, ListItem } from 'react-native-elements';
+import { View, Picker, Button, ActivityIndicator, ScrollView } from 'react-native';
+import { ListItem } from 'react-native-elements';
 import axios from 'axios';
 
 export class Movies extends Component {
@@ -8,6 +8,8 @@ export class Movies extends Component {
     super(props);
     this.state = {
       data: [],
+      dataA: [],
+      dataD: [],
       PickerValue: '',
       isLoading: true,
       throttlemode: '',
@@ -22,9 +24,7 @@ export class Movies extends Component {
         "throttlemode": value
       },
       () => {
-        // here is our callback that will be fired after state change.
-        // Alert.alert();
-        this.getVeiculos();
+        this.getModelos();
       }
     );
   }
@@ -35,9 +35,7 @@ export class Movies extends Component {
         "throttlemode2": value
       },
       () => {
-        // here is our callback that will be fired after state change.
-        // Alert.alert();
-        this.getModelos();
+        this.getAnos();
       }
     );
   }
@@ -48,9 +46,7 @@ export class Movies extends Component {
         "throttlemode3": value
       },
       () => {
-        // here is our callback that will be fired after state change.
-        // Alert.alert();
-        this.getAnos();
+        this.getDetalhes();
       }
     );
   }
@@ -86,14 +82,10 @@ export class Movies extends Component {
 
     return (
       <View>
-
         <Picker
-          // selectedValue={this.state.PickerValue}
-          // onValueChange={(itemValue, indexValue) => this.setState({ PickerValue: itemValue })} >
           selectedValue={this.state.throttlemode}
           onValueChange={this.onPickerValueChange}
         >
-
           <Picker.Item label="Selecione a marca do veiculo" value="" />
           {this.state.dataSource.map((item, key) => (
             <Picker.Item label={item.fipe_name} value={item.id} key={key} />)
@@ -108,20 +100,26 @@ export class Movies extends Component {
             <Picker.Item key={i} label={item.name} value={item.id} />
           ))}
         </Picker>
-        
+
         <Picker
           selectedValue={this.state.throttlemode3}
           onValueChange={this.onPickerValueChange3}
         >
-          {this.state.data.map((item, i) => (
+          {this.state.dataA.map((item, i) => (
             <Picker.Item key={i} label={item.name} value={item.id} />
           ))}
         </Picker>
 
-        {/* <Button title="Buscar" onPress={() => this.getVeiculos()} /> */}
+        <ScrollView>
+          {this.state.dataD.map((item, i) => (
+            <ListItem key={i} title={item.name} onPress={() => this.onDetalhes(item)} />
+          ))}
+        </ScrollView>
+
+        {/* <Button title="Buscar" onPress={() => this.getDetalhes()} /> */}
 
         {/* <ScrollView>
-          {this.state.data.map((item, i) => (
+          {this.state.dataD.map((item, i) => (
             <ListItem key={i} title={item.name} onPress={() => this.onDetalhes(item)} />
           ))}
         </ScrollView> */}
@@ -130,13 +128,12 @@ export class Movies extends Component {
     );
   }
 
-  getVeiculos = (clear = true) => {
+  getModelos = (clear = true) => {
     var data = this.state.throttlemode;
 
     if (data == "") {
-      alert("Escolha uma opção de marca");
+      alert("Escolha uma marca");
     } else {
-
       axios
         .get(`http://fipeapi.appspot.com/api/1/carros/veiculos/${this.state.throttlemode}.json`)
         .then(resp => {
@@ -150,18 +147,17 @@ export class Movies extends Component {
     }
   };
 
-  getModelos = (clear = true) => {
-    var data = this.state.throttlemode2;
-    if (data == "") {
-      alert("Escolha uma opção de marca");
+  getAnos = (clear = true) => {
+    var dataA = this.state.throttlemode2;
+    if (dataA == "") {
+      alert("Escolha o modelo");
     } else {
-
       axios
         .get(`http://fipeapi.appspot.com/api/1/carros/veiculo/${this.state.throttlemode}/${this.state.throttlemode2}.json`)
         .then(resp => {
           clear
-            ? this.setState({ data: resp.data, totalResults: resp.data.totalResults })
-            : this.setState({ data: [...this.state.data, ...resp.data], totalResults: resp.data.totalResults });
+            ? this.setState({ dataA: resp.data, totalResults: resp.data.totalResults })
+            : this.setState({ dataA: [...this.state.data, ...resp.data], totalResults: resp.data.totalResults });
         })
         .catch(err => {
           console.log(err);
@@ -169,18 +165,17 @@ export class Movies extends Component {
     }
   };
 
-  getAnos = (clear = true) => {
-    var data = this.state.throttlemode3;
-    if (data == "") {
-      alert("Escolha uma opção de marca");
+  getDetalhes = (clear = true) => {
+    var dataD = this.state.throttlemode3;
+    if (dataD == "") {
+      alert("Escolha o ano");
     } else {
-
       axios
         .get(`http://fipeapi.appspot.com/api/1/carros/veiculo/${this.state.throttlemode}/${this.state.throttlemode2}/${this.state.throttlemode3}.json`)
         .then(resp => {
           clear
-            ? this.setState({ data: resp.data, totalResults: resp.data.totalResults })
-            : this.setState({ data: [...this.state.data, ...resp.data], totalResults: resp.data.totalResults });
+            ? this.setState({ dataD: [resp.data], totalResults: resp.data.totalResults })
+            : this.setState({ dataD: [...this.state.data, ...resp.data], totalResults: resp.data.totalResults });
         })
         .catch(err => {
           console.log(err);
