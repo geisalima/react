@@ -5,7 +5,7 @@ export const InternalNav = createStackNavigator({
   Movies: {
     screen: Movies,
     navigationOptions: () => ({
-      title: 'Busca veículos'
+      title: 'Buscar veículos'
     })
   },
   

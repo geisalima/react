@@ -85,6 +85,7 @@ export class Movies extends Component {
         <Picker
           selectedValue={this.state.throttlemode}
           onValueChange={this.onPickerValueChange}
+          mode="dropdown"
         >
           <Picker.Item label="Selecione a marca do veiculo" value="" />
           {this.state.dataSource.map((item, key) => (
@@ -95,6 +96,7 @@ export class Movies extends Component {
         <Picker
           selectedValue={this.state.throttlemode2}
           onValueChange={this.onPickerValueChange2}
+          mode="dropdown"
         >
           {this.state.data.map((item, i) => (
             <Picker.Item key={i} label={item.name} value={item.id} />
@@ -104,6 +106,7 @@ export class Movies extends Component {
         <Picker
           selectedValue={this.state.throttlemode3}
           onValueChange={this.onPickerValueChange3}
+          mode="dropdown"
         >
           {this.state.dataA.map((item, i) => (
             <Picker.Item key={i} label={item.name} value={item.id} />
