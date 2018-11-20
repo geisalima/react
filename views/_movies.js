@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Picker, Button, ActivityIndicator, ScrollView } from 'react-native';
-import { ListItem } from 'react-native-elements';
+import { ListItem, Header } from 'react-native-elements';
 import axios from 'axios';
 
 export class Movies extends Component {

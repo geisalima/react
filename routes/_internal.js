@@ -1,5 +1,6 @@
 import { createStackNavigator } from 'react-navigation';
 import { Movies, Detalhes } from '../views';
+import { Header } from 'react-native-elements';
 
 export const InternalNav = createStackNavigator({
   Movies: {
@@ -8,7 +9,7 @@ export const InternalNav = createStackNavigator({
       title: 'Buscar veículos'
     })
   },
-  
+
   Detalhes: {
     screen: Detalhes,
     navigationOptions: () => ({
