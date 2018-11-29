@@ -2,19 +2,17 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
 export class Detalhes extends Component {
-
     constructor(props) {
         super(props);
     }
 
     render() {
-        const params = this.props.navigation.state.params;
-
+        let params = this.props.navigation.state.params;
         return (
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
+            <View style={styles.container}>
                 <View>
-                    <Text>Detalhes</Text>
-                    <Text style={styles.detalhes}>Mês de referência: {params.referencia}</Text>
+                    <Text style={styles.titulo}>Detalhes</Text>
+                    <Text style={styles.detalhes}>Mês Referência: {params.referencia}</Text>
                     <Text style={styles.detalhes}>Código Fipe: {params.fipe_codigo}</Text>
                     <Text style={styles.detalhes}>Marca: {params.marca}</Text>
                     <Text style={styles.detalhes}>Modelo: {params.name}</Text>
@@ -28,12 +26,19 @@ export class Detalhes extends Component {
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        flexDirection: 'row',
+        padding: 20
+    },
     detalhes: {
-        fontWeight: 'bold',
         fontSize: 18,
         padding: 10
     },
-    red: {
-        color: 'red',
+    titulo: {
+        padding: 10,
+        fontSize: 22,
+        fontWeight: 'bold',
     },
 });

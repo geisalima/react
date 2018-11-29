@@ -1,27 +1,25 @@
 import React, { Component } from 'react';
-import { View, Picker, Button, ActivityIndicator, ScrollView } from 'react-native';
-import { ListItem, Header } from 'react-native-elements';
+import { View, Picker, ActivityIndicator, StyleSheet, TouchableOpacity, Text, Alert } from 'react-native';
 import axios from 'axios';
 
-export class Movies extends Component {
+export class Veiculos extends Component {
   constructor(props) {
     super(props);
     this.state = {
       data: [],
       dataA: [],
       dataD: [],
-      PickerValue: '',
-      isLoading: true,
-      throttlemode: '',
-      throttlemode2: '',
-      throttlemode3: '',
+      carregando: true,
+      marca: '',
+      modelo: '',
+      ano: '',
     };
   }
 
   onPickerValueChange = (value, index) => {
     this.setState(
       {
-        "throttlemode": value
+        "marca": value
       },
       () => {
         this.getModelos();
@@ -32,7 +30,7 @@ export class Movies extends Component {
   onPickerValueChange2 = (value, index) => {
     this.setState(
       {
-        "throttlemode2": value
+        "modelo": value
       },
       () => {
         this.getAnos();
@@ -43,7 +41,7 @@ export class Movies extends Component {
   onPickerValueChange3 = (value, index) => {
     this.setState(
       {
-        "throttlemode3": value
+        "ano": value
       },
       () => {
         this.getDetalhes();
@@ -56,8 +54,8 @@ export class Movies extends Component {
       .then((response) => response.json())
       .then((responseJson) => {
         this.setState({
-          isLoading: false,
-          dataSource: responseJson
+          carregando: false,
+          dadosIni: responseJson
         }, function () {
         });
       })
@@ -72,7 +70,7 @@ export class Movies extends Component {
 
   render() {
 
-    if (this.state.isLoading) {
+    if (this.state.carregando) {
       return (
         <View style={{ flex: 1, paddingTop: 20 }}>
           <ActivityIndicator />
@@ -81,64 +79,55 @@ export class Movies extends Component {
     }
 
     return (
-      <View>
+      <View style={styles.container}>
         <Picker
-          selectedValue={this.state.throttlemode}
+          selectedValue={this.state.marca}
           onValueChange={this.onPickerValueChange}
           mode="dropdown"
         >
           <Picker.Item label="Selecione a marca do veiculo" value="" />
-          {this.state.dataSource.map((item, key) => (
+          {this.state.dadosIni.map((item, key) => (
             <Picker.Item label={item.fipe_name} value={item.id} key={key} />)
           )}
         </Picker>
 
         <Picker
-          selectedValue={this.state.throttlemode2}
+          selectedValue={this.state.modelo}
           onValueChange={this.onPickerValueChange2}
           mode="dropdown"
         >
+          <Picker.Item label="Selecione o modelo" value="" />
           {this.state.data.map((item, i) => (
             <Picker.Item key={i} label={item.name} value={item.id} />
           ))}
         </Picker>
 
         <Picker
-          selectedValue={this.state.throttlemode3}
+          selectedValue={this.state.ano}
           onValueChange={this.onPickerValueChange3}
           mode="dropdown"
         >
+          <Picker.Item label="Selecione o ano" value="" />
           {this.state.dataA.map((item, i) => (
             <Picker.Item key={i} label={item.name} value={item.id} />
           ))}
         </Picker>
 
-        <ScrollView>
-          {this.state.dataD.map((item, i) => (
-            <ListItem key={i} title={item.name} onPress={() => this.onDetalhes(item)} />
-          ))}
-        </ScrollView>
-
-        {/* <Button title="Buscar" onPress={() => this.getDetalhes()} /> */}
-
-        {/* <ScrollView>
-          {this.state.dataD.map((item, i) => (
-            <ListItem key={i} title={item.name} onPress={() => this.onDetalhes(item)} />
-          ))}
-        </ScrollView> */}
+        {this.state.dataD.map((item, i) => (
+          <TouchableOpacity style={styles.button} key={i} onPress={() => this.onDetalhes(item)} >
+            <Text style={styles.buttonText}>Ver Detalhes</Text>
+          </TouchableOpacity>
+        ))}
 
       </View>
     );
   }
 
   getModelos = (clear = true) => {
-    var data = this.state.throttlemode;
-
-    if (data == "") {
-      alert("Escolha uma marca");
-    } else {
+    var vl = this.state.marca;
+    if (vl != "") {
       axios
-        .get(`http://fipeapi.appspot.com/api/1/carros/veiculos/${this.state.throttlemode}.json`)
+        .get(`http://fipeapi.appspot.com/api/1/carros/veiculos/${this.state.marca}.json`)
         .then(resp => {
           clear
             ? this.setState({ data: resp.data, totalResults: resp.data.totalResults })
@@ -151,12 +140,10 @@ export class Movies extends Component {
   };
 
   getAnos = (clear = true) => {
-    var dataA = this.state.throttlemode2;
-    if (dataA == "") {
-      alert("Escolha o modelo");
-    } else {
+    var vl = this.state.modelo;
+    if (vl != "") {
       axios
-        .get(`http://fipeapi.appspot.com/api/1/carros/veiculo/${this.state.throttlemode}/${this.state.throttlemode2}.json`)
+        .get(`http://fipeapi.appspot.com/api/1/carros/veiculo/${this.state.marca}/${this.state.modelo}.json`)
         .then(resp => {
           clear
             ? this.setState({ dataA: resp.data, totalResults: resp.data.totalResults })
@@ -169,12 +156,10 @@ export class Movies extends Component {
   };
 
   getDetalhes = (clear = true) => {
-    var dataD = this.state.throttlemode3;
-    if (dataD == "") {
-      alert("Escolha o ano");
-    } else {
+    var vl = this.state.ano;
+    if (vl != "") {
       axios
-        .get(`http://fipeapi.appspot.com/api/1/carros/veiculo/${this.state.throttlemode}/${this.state.throttlemode2}/${this.state.throttlemode3}.json`)
+        .get(`http://fipeapi.appspot.com/api/1/carros/veiculo/${this.state.marca}/${this.state.modelo}/${this.state.ano}.json`)
         .then(resp => {
           clear
             ? this.setState({ dataD: [resp.data], totalResults: resp.data.totalResults })
@@ -187,3 +172,20 @@ export class Movies extends Component {
   };
 
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingHorizontal: 10,
+  },
+  button: {
+    alignItems: 'center',
+    backgroundColor: '#348dc1',
+    padding: 10,
+    marginTop: 20
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 18
+  }
+})

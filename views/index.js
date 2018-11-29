@@ -1,2 +1,2 @@
-export * from './_movies';
+export * from './_veiculos';
 export * from './_detalhes';
