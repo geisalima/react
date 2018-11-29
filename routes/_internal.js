@@ -1,14 +1,20 @@
 import { createStackNavigator } from 'react-navigation';
-import { Veiculos, Detalhes } from '../views';
+import { Slider, Veiculos, Detalhes } from '../views';
+import Swiper from "react-native-custom-swiper";
 
 export const InternalNav = createStackNavigator({
+  // Slider: {
+  //   screen: Slider,
+  //   navigationOptions: () => ({
+  //     title: 'Home'
+  //   })
+  // },
   Veiculos: {
     screen: Veiculos,
     navigationOptions: () => ({
       title: 'Buscar veículos'
     })
   },
-
   Detalhes: {
     screen: Detalhes,
     navigationOptions: () => ({

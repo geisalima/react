@@ -11,7 +11,7 @@ export class Slider extends Component {
     render() {
         return (
             <View >
-                
+
             </View>
         );
     }
