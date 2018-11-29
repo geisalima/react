@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Picker, ActivityIndicator, StyleSheet, TouchableOpacity, Text, Alert } from 'react-native';
+import { View, Picker, ActivityIndicator, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import axios from 'axios';
 
 export class Veiculos extends Component {
